@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "jsonator"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
   { name="Sergey Fomin", email="sergiusnn@gmail.com" },
 ]
@@ -33,3 +33,6 @@ include = [
 
 [project.scripts]
 jsonator = "jsonator:main"
+
+[tool.poetry]
+readme = "README.rst"
