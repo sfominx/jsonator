@@ -1,0 +1,38 @@
+[build-system]
+requires = [
+    "hatchling>=0.25.1",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "jsonator"
+version = "0.1.1"
+authors = [
+  { name="Sergey Fomin", email="sergiusnn@gmail.com" },
+]
+description = "JSON formatting and validating tool"
+readme = "README.rst"
+requires-python = ">=3.5"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/sfominx/jsonator"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/jsonator",
+]
+
+[tool.hatch.build.targets.wheel]
+include = [
+    "/jsonator/*",
+]
+
+[project.scripts]
+jsonator = "jsonator:main"
+
+[tool.poetry]
+readme = "README.rst"
