@@ -8,7 +8,7 @@ from jsonator.jsonator import ReturnCode, format_json_file
 def main() -> int:
     """Main function"""
     arg_parser = argparse.ArgumentParser(
-        prog="run_mode", formatter_class=argparse.RawTextHelpFormatter
+        prog="jsonator", formatter_class=argparse.RawTextHelpFormatter
     )
     arg_parser.add_argument("path", type=Path, help="Path to the JSON file or directory")
     arg_parser.add_argument("--recursive", "-r", action="store_true", help="Scan subdirectories")
@@ -21,6 +21,16 @@ Return code 1 means some files would be reformatted.
 Return code 122 means file not found.
 Return code 123 means there was an internal error.""",
     )
+    arg_parser.add_argument(
+        "--diff",
+        action="store_true",
+        help="Don't write the files back, just output a diff for each file on stdout.",
+    )
+    arg_parser.add_argument(
+        "--color",
+        action="store_true",
+        help="Show colored diff. Only applies when `--diff` is given.",
+    )
 
     args = arg_parser.parse_args()
 
@@ -32,7 +42,7 @@ Return code 123 means there was an internal error.""",
         pattern = "**/*.json" if args.recursive else "*.json"
 
         for json_file in args.path.glob(pattern):
-            result = format_json_file(json_file, args.check)
+            result = format_json_file(json_file, args.check, args.diff, args.color)
 
             if result == ReturnCode.INTERNAL_ERROR:
                 return ReturnCode.INTERNAL_ERROR.value
@@ -46,4 +56,4 @@ Return code 123 means there was an internal error.""",
             else ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
         )
 
-    return format_json_file(args.path, args.check).value
+    return format_json_file(args.path, args.check, args.diff, args.color).value
