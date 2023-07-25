@@ -42,3 +42,24 @@ Example usage:
 ::
 
 $ jsonator /path/to/json/file.json --check
+
+
+Dev:
+--------------
+Build package
+
+::
+
+$ python -m build
+
+Check package
+
+::
+
+$ twine check dist/*
+
+Publish package
+
+::
+
+$ twine upload dist/*
