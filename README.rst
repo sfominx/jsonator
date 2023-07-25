@@ -23,6 +23,10 @@ can be passed to the main() function:
 
 * --check: An optional flag that indicates whether to perform a dry run and return the status without actually reformatting the files. The exit code will indicate whether any files would be reformatted or if there were any errors.
 
+* --diff: Don't write the files back, just output a diff for each file on stdout.
+
+* --color: Show colored diff. Only applies when `--diff` is given.
+
 The module uses the ReturnCode enum to indicate the exit code of the formatting operation. The possible exit codes are:
 
 * `0`: Indicates that no files would be reformatted.
