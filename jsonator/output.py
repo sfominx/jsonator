@@ -2,6 +2,7 @@
 Output features
 """
 
+
 def diff(a_text: str, b_text: str, a_name: str, b_name: str) -> str:
     """Return a unified diff string between strings `a` and `b`."""
     import difflib  # pylint: disable=import-outside-toplevel

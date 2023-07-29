@@ -1,14 +1,11 @@
+"""Test main module."""
 import argparse
 import sys
 from pathlib import Path
 
-from jsonator import main
-from jsonator.jsonator import ReturnCode
+from jsonator import main  # pylint: disable=import-error
+from jsonator.jsonator import ReturnCode  # pylint: disable=import-error
 
-# pylint: disable=import-error,wrong-import-position,redefined-outer-name
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.append(str(PROJECT_ROOT))
 
 FILES_ENCODING = "utf-8"
 INTERPRETER = Path(sys.executable).stem
@@ -72,7 +69,8 @@ def test_main_invalid_single_file_no_check(mocker, invalid_format_json: Path):
 
 
 def test_main_valid_single_file_check(mocker, valid_format_json: Path):
-    """Test that main function returns NOTHING_WOULD_CHANGE with a valid format file and --check arg."""
+    """Test that main function returns NOTHING_WOULD_CHANGE
+    with a valid format file and --check arg."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -83,7 +81,8 @@ def test_main_valid_single_file_check(mocker, valid_format_json: Path):
 
 
 def test_main_invalid_single_file_check(mocker, invalid_format_json: Path):
-    """Test that main function returns SOME_FILES_WOULD_BE_REFORMATTED with an invalid format file and --check arg."""
+    """Test that main function returns SOME_FILES_WOULD_BE_REFORMATTED with
+    an invalid format file and --check arg."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -94,7 +93,8 @@ def test_main_invalid_single_file_check(mocker, invalid_format_json: Path):
 
 
 def test_main_valid_dir_no_check_no_subdirs(mocker, valid_format_dir_no_subdirs: Path):
-    """Test that main function returns NOTHING_WOULD_CHANGE with a directory contains valid format files."""
+    """Test that main function returns NOTHING_WOULD_CHANGE with a directory contains
+    valid format files."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -105,7 +105,8 @@ def test_main_valid_dir_no_check_no_subdirs(mocker, valid_format_dir_no_subdirs:
 
 
 def test_main_invalid_dir_no_check_no_subdirs(mocker, invalid_format_dir_no_subdirs: Path):
-    """Test that main function returns NOTHING_WOULD_CHANGE with a directory contains invalid format files."""
+    """Test that main function returns NOTHING_WOULD_CHANGE with a directory contains
+    invalid format files."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -120,7 +121,8 @@ def test_main_invalid_dir_no_check_no_subdirs(mocker, invalid_format_dir_no_subd
 
 
 def test_main_valid_dir_check_no_subdirs(mocker, valid_format_dir_no_subdirs: Path):
-    """Test that main function returns NOTHING_WOULD_CHANGE with a directory contains valid format files and --check arg."""
+    """Test that main function returns NOTHING_WOULD_CHANGE with a directory contains valid format
+    files and --check arg."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -131,7 +133,8 @@ def test_main_valid_dir_check_no_subdirs(mocker, valid_format_dir_no_subdirs: Pa
 
 
 def test_main_invalid_dir_check_no_subdirs(mocker, invalid_format_dir_no_subdirs: Path):
-    """Test that main function returns SOME_FILES_WOULD_BE_REFORMATTED with a directory contains invalid format files and --check arg."""
+    """Test that main function returns SOME_FILES_WOULD_BE_REFORMATTED with a directory contains
+    invalid format files and --check arg."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -142,6 +145,7 @@ def test_main_invalid_dir_check_no_subdirs(mocker, invalid_format_dir_no_subdirs
 
 
 def test_main_valid_dir_no_check_no_recursive(mocker, valid_format_dir_subdirs: Path):
+    """Test main function with a valid directory path, without check and without recursive."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -152,6 +156,7 @@ def test_main_valid_dir_no_check_no_recursive(mocker, valid_format_dir_subdirs: 
 
 
 def test_main_invalid_dir_no_check_no_recursive(mocker, invalid_format_dir_subdirs: Path):
+    """Test main function with an invalid directory path, without check and without recursive."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -162,6 +167,7 @@ def test_main_invalid_dir_no_check_no_recursive(mocker, invalid_format_dir_subdi
 
 
 def test_main_valid_dir_check_no_recursive(mocker, valid_format_dir_subdirs: Path):
+    """Test main function with a valid directory path, with check and without recursive."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -172,6 +178,7 @@ def test_main_valid_dir_check_no_recursive(mocker, valid_format_dir_subdirs: Pat
 
 
 def test_main_invalid_dir_check_no_recursive(mocker, invalid_format_dir_subdirs: Path):
+    """Test main function with an invalid directory path, with check and without recursive."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -182,6 +189,7 @@ def test_main_invalid_dir_check_no_recursive(mocker, invalid_format_dir_subdirs:
 
 
 def test_main_valid_dir_no_check_recursive(mocker, valid_format_dir_subdirs: Path):
+    """Test main function with a valid directory path, without check and with recursive."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -192,6 +200,7 @@ def test_main_valid_dir_no_check_recursive(mocker, valid_format_dir_subdirs: Pat
 
 
 def test_main_invalid_dir_no_check_recursive(mocker, invalid_format_dir_subdirs: Path):
+    """Test main function with an invalid directory path, without check and with recursive."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -202,6 +211,7 @@ def test_main_invalid_dir_no_check_recursive(mocker, invalid_format_dir_subdirs:
 
 
 def test_main_valid_dir_check_recursive(mocker, valid_format_dir_subdirs: Path):
+    """Test main function with a valid directory path, with check and with recursive."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
@@ -212,6 +222,7 @@ def test_main_valid_dir_check_recursive(mocker, valid_format_dir_subdirs: Path):
 
 
 def test_main_invalid_dir_check_recursive(mocker, invalid_format_dir_subdirs: Path):
+    """Test main function with an invalid directory path, with check and with recursive."""
     mocker.patch(
         "argparse.ArgumentParser.parse_args",
         return_value=argparse.Namespace(
