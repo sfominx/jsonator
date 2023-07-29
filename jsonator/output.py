@@ -1,9 +1,13 @@
-def diff(a: str, b: str, a_name: str, b_name: str) -> str:
-    """Return a unified diff string between strings `a` and `b`."""
-    import difflib
+"""
+Output features
+"""
 
-    a_lines = a.splitlines(keepends=True)
-    b_lines = b.splitlines(keepends=True)
+def diff(a_text: str, b_text: str, a_name: str, b_name: str) -> str:
+    """Return a unified diff string between strings `a` and `b`."""
+    import difflib  # pylint: disable=import-outside-toplevel
+
+    a_lines = a_text.splitlines(keepends=True)
+    b_lines = b_text.splitlines(keepends=True)
     diff_lines = []
     for line in difflib.unified_diff(a_lines, b_lines, fromfile=a_name, tofile=b_name, n=5):
         # Work around https://bugs.python.org/issue2142
