@@ -37,10 +37,16 @@ def json_file_incorrect_format(tmp_path: Path) -> Path:
 def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> None:
     """Test format_json_file function"""
     # Test formatting with corectly formatted file
-    assert format_json_file(json_file, check=False, diff=False, color=False) == ReturnCode.NOTHING_WOULD_CHANGE
+    assert (
+        format_json_file(json_file, check=False, diff=False, color=False)
+        == ReturnCode.NOTHING_WOULD_CHANGE
+    )
 
     # Test checking format with corectly formatted file
-    assert format_json_file(json_file, check=True, diff=False, color=False) == ReturnCode.NOTHING_WOULD_CHANGE
+    assert (
+        format_json_file(json_file, check=True, diff=False, color=False)
+        == ReturnCode.NOTHING_WOULD_CHANGE
+    )
 
     # Test checking format with incorectly formatted file
     assert (
@@ -50,20 +56,28 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
 
     # Test checking format with incorectly formatted file
     assert (
-        format_json_file(json_file_incorrect_format, check=False, diff=False, color=False) == ReturnCode.NOTHING_WOULD_CHANGE
+        format_json_file(json_file_incorrect_format, check=False, diff=False, color=False)
+        == ReturnCode.NOTHING_WOULD_CHANGE
     )
 
     # Test with non-existing file
     assert (
-        format_json_file(Path("non_existing_file.json"), check=False, diff=False, color=False) == ReturnCode.INTERNAL_ERROR
+        format_json_file(Path("non_existing_file.json"), check=False, diff=False, color=False)
+        == ReturnCode.INTERNAL_ERROR
     )
 
     # Test with a non-json file
     non_json_file = Path(json_file.parent, "test.txt")
     non_json_file.write_text("hello world", encoding=FILES_ENCODING)
-    assert format_json_file(non_json_file, check=False, diff=False, color=False) == ReturnCode.INTERNAL_ERROR
+    assert (
+        format_json_file(non_json_file, check=False, diff=False, color=False)
+        == ReturnCode.INTERNAL_ERROR
+    )
 
     # Test with a malformed json file
     malformed_file = Path(json_file.parent, "malformed.json")
     malformed_file.write_text("{", encoding=FILES_ENCODING)
-    assert format_json_file(malformed_file, check=False, diff=False, color=False) == ReturnCode.INTERNAL_ERROR
+    assert (
+        format_json_file(malformed_file, check=False, diff=False, color=False)
+        == ReturnCode.INTERNAL_ERROR
+    )

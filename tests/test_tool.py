@@ -6,7 +6,7 @@ from subprocess import run
 
 # currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 # parentdir = os.path.dirname(currentdir)
-# sys.path.insert(0, parentdir) 
+# sys.path.insert(0, parentdir)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 # sys.path.append(str(PROJECT_ROOT))
 
@@ -14,7 +14,6 @@ from jsonator.jsonator import ReturnCode
 from tests.addons import INTERPRETER
 
 # pylint: disable=import-error,wrong-import-position,redefined-outer-name
-
 
 
 pytest_plugins = ["addons"]
@@ -123,7 +122,9 @@ def test_main_invalid_dir_no_check_recursive(invalid_format_dir_subdirs: Path):
 def test_main_valid_dir_check_recursive(valid_format_dir_subdirs: Path):
     process = run(
         [
-            PYTHON_EXE, MODULE, JSONATOR,
+            PYTHON_EXE,
+            MODULE,
+            JSONATOR,
             "--recursive",
             "--check",
             valid_format_dir_subdirs,
@@ -135,7 +136,9 @@ def test_main_valid_dir_check_recursive(valid_format_dir_subdirs: Path):
 def test_main_invalid_dir_check_recursive(invalid_format_dir_subdirs: Path):
     process = run(
         [
-            PYTHON_EXE, MODULE, JSONATOR,
+            PYTHON_EXE,
+            MODULE,
+            JSONATOR,
             "--recursive",
             "--check",
             invalid_format_dir_subdirs,
