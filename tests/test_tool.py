@@ -163,3 +163,21 @@ def test_main_invalid_dir_check_recursive(invalid_format_dir_subdirs: Path):
         check=False,
     )
     assert process.returncode == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
+
+
+def test_main_diff_colored_output(invalid_format_dir_subdirs: Path):
+    """Test main module returns SOME_FILES_WOULD_BE_REFORMATTED with invalid format files."""
+    process = run(
+        [
+            PYTHON_EXE,
+            MODULE,
+            JSONATOR,
+            "--recursive",
+            "--check",
+            "--diff",
+            "--color",
+            invalid_format_dir_subdirs,
+        ],
+        check=False,
+    )
+    assert process.returncode == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
