@@ -1,3 +1,4 @@
+"""Pytest fixtures."""
 import sys
 from pathlib import Path
 

@@ -1,6 +1,6 @@
 """Main package module"""
 import sys
-from jsonator import main
 
+from jsonator import main
 
 sys.exit(main())
