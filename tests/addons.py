@@ -55,6 +55,15 @@ def invalid_format_json(tmp_path: Path) -> Path:
 
 
 @pytest.fixture
+def invalid_format_json_multiple_keys(tmp_path: Path) -> Path:
+    """Create a temporary file for testing
+    with invalid json formatting and multiple keys"""
+    file_path = tmp_path / "test_incorrect.json"
+    file_path.write_text('{"key2": "value", "key1": "value2"}', encoding=FILES_ENCODING)
+    return file_path
+
+
+@pytest.fixture
 def invalid_format_dir_no_subdirs(tmp_path: Path) -> Path:
     """Create a temporary file for testing with valid json formatting"""
     test_dir = tmp_path / "test_dir"

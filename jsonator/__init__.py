@@ -1,5 +1,6 @@
 """Main function"""
 import argparse
+import sys
 from pathlib import Path
 
 from jsonator.jsonator import ReturnCode, format_json_file
@@ -31,18 +32,27 @@ Return code 123 means there was an internal error.""",
         action="store_true",
         help="Show colored diff. Only applies when `--diff` is given.",
     )
+    arg_parser.add_argument(
+        "--sort-keys",
+        action="store_true",
+        help="Sort the output of dictionaries alphabetically by key.",
+    )
 
     args = arg_parser.parse_args()
 
     if not args.path.exists():
         return ReturnCode.FILE_NOT_FOUND.value
 
+    if args.sort_keys and sys.version_info < (3, 5):
+        print("The `--sort-keys` option is only available on Python 3.5 and above", file=sys.stderr)
+        return ReturnCode.INTERNAL_ERROR.value
+
     if args.path.is_dir():
         all_files_identical = True
         pattern = "**/*.json" if args.recursive else "*.json"
 
         for json_file in args.path.glob(pattern):
-            result = format_json_file(json_file, args.check, args.diff, args.color)
+            result = format_json_file(json_file, args.check, args.diff, args.color, args.sort_keys)
 
             if result == ReturnCode.INTERNAL_ERROR:
                 return ReturnCode.INTERNAL_ERROR.value
@@ -56,4 +66,4 @@ Return code 123 means there was an internal error.""",
             else ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
         )
 
-    return format_json_file(args.path, args.check, args.diff, args.color).value
+    return format_json_file(args.path, args.check, args.diff, args.color, args.sort_keys).value
