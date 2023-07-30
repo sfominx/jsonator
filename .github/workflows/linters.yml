@@ -1,0 +1,41 @@
+# This workflow will install Python dependencies, run linter checks and report results.
+
+name: Linters
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  check:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.11
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install pylint isort mypy pytest pytest-mock black
+    - name: Lint with pylint
+      run: |
+        pylint jsonator/
+        pylint tests/
+    - name: Check with mypy
+      run: |
+        mypy --disallow-untyped-calls --disallow-untyped-defs --disallow-incomplete-defs --no-implicit-optional jsonator/
+        mypy --disallow-untyped-calls --disallow-untyped-defs --disallow-incomplete-defs --no-implicit-optional tests/
+    - name: Check with isort
+      run: |
+        isort --profile black --check-only jsonator/
+        isort --profile black --check-only tests/
+    - name: Check with black
+      run: |
+        black --line-length=100 --target-version=py39 --target-version=py310 --target-version=py311 --check jsonator/
+        black --line-length=100 --target-version=py39 --target-version=py310 --target-version=py311 --check tests/
