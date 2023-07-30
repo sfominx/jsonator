@@ -1,6 +1,8 @@
 JSONator
 ========
 
+[![Downloads](https://static.pepy.tech/badge/jsonator)](https://pepy.tech/project/jsonator)
+
 Description
 -----------
 
@@ -26,6 +28,8 @@ can be passed to the main() function:
 * --diff: Don't write the files back, just output a diff for each file on stdout.
 
 * --color: Show colored diff. Only applies when `--diff` is given.
+
+* --sort-keys: Sort the output of dictionaries alphabetically by key.
 
 The module uses the ReturnCode enum to indicate the exit code of the formatting operation. The possible exit codes are:
 
