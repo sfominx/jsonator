@@ -112,7 +112,10 @@ def test_main_valid_single_file_check(mocker: MockerFixture, valid_format_json: 
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
 
-def test_main_valid_single_file_check_sort_keys(mocker: MockerFixture, invalid_format_json_multiple_keys: Path) -> None:
+
+def test_main_valid_single_file_check_sort_keys(
+    mocker: MockerFixture, invalid_format_json_multiple_keys: Path
+) -> None:
     """Test that main function returns NOTHING_WOULD_CHANGE
     with a valid format file and --check arg."""
     mocker.patch(
