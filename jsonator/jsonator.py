@@ -41,7 +41,9 @@ def make_temp_file() -> Path:
     return temp_file
 
 
-def format_json_file(json_file: Path, check: bool, diff: bool, color: bool) -> ReturnCode:
+def format_json_file(
+    json_file: Path, check: bool, diff: bool, color: bool, sort_keys: bool
+) -> ReturnCode:
     """
     This function formats the file in JSON format.
     It uses the json.tool module, built into Python, to create a readable JSON format.
@@ -52,7 +54,12 @@ def format_json_file(json_file: Path, check: bool, diff: bool, color: bool) -> R
         print(f"Formatting {json_file}")
 
     tmp_file = make_temp_file()
-    os.system(f"{INTERPRETER} -m json.tool {json_file} {tmp_file}")
+
+    cmd = [INTERPRETER, "-m", "json.tool", json_file, tmp_file]
+    if sort_keys:
+        cmd.append("--sort-keys")
+
+    os.system(" ".join([str(command) for command in cmd]))
 
     if check or diff:
         is_identical = filecmp.cmp(json_file, tmp_file, shallow=False)
