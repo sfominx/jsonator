@@ -1,7 +1,7 @@
 JSONator
 ========
 
-[![Downloads](https://static.pepy.tech/badge/jsonator)](https://pepy.tech/project/jsonator)
+<a href="https://pepy.tech/project/jsonator"><img alt="Downloads" src="https://pepy.tech/badge/jsonator"></a>
 
 Description
 -----------
