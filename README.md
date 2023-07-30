@@ -1,6 +1,7 @@
 JSONator
 ========
 
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Downloads](https://static.pepy.tech/badge/jsonator)](https://pepy.tech/project/jsonator)
 
 Description
@@ -43,27 +44,27 @@ The module uses the ReturnCode enum to indicate the exit code of the formatting 
 
 Example usage:
 --------------
-::
 
+```
 $ jsonator /path/to/json/file.json --check
-
+```
 
 Dev:
 --------------
 Build package
 
-::
-
+```
 $ python -m build
+```
 
 Check package
 
-::
-
+```
 $ twine check dist/*
+```
 
 Publish package
 
-::
-
+```
 $ twine upload dist/*
+```
