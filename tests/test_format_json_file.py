@@ -7,11 +7,14 @@ from pathlib import Path
 
 import pytest
 
+from jsonator.enum import ReturnCode  # pylint: disable=import-error
+from jsonator.report import Report  # pylint: disable=import-error
+
 # pylint: disable=import-error,wrong-import-position,redefined-outer-name
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-from jsonator.jsonator import ReturnCode, format_json_file
+from jsonator.jsonator import format_json_file
 
 FILES_ENCODING = "utf-8"
 
@@ -37,53 +40,56 @@ def json_file_incorrect_format(tmp_path: Path) -> Path:
 def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> None:
     """Test format_json_file function"""
     # Test formatting with corectly formatted file
-    assert (
-        format_json_file(json_file, check=False, diff=False, color=False, sort_keys=False)
-        == ReturnCode.NOTHING_WOULD_CHANGE
-    )
+    report = Report(check=False, diff=False)
+    format_json_file(json_file, report, check=False, diff=False, color=False, sort_keys=False)
+    assert report.status == ReturnCode.NOTHING_WOULD_CHANGE.value
 
     # Test checking format with corectly formatted file
-    assert (
-        format_json_file(json_file, check=True, diff=False, color=False, sort_keys=False)
-        == ReturnCode.NOTHING_WOULD_CHANGE
-    )
+    report = Report(check=True, diff=False)
+    format_json_file(json_file, report, check=True, diff=False, color=False, sort_keys=False)
+    assert report.status == ReturnCode.NOTHING_WOULD_CHANGE.value
 
     # Test checking format with incorectly formatted file
-    assert (
-        format_json_file(
-            json_file_incorrect_format, check=True, diff=False, color=False, sort_keys=False
-        )
-        == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED
+    report = Report(check=True, diff=False)
+    format_json_file(
+        json_file_incorrect_format, report, check=True, diff=False, color=False, sort_keys=False
     )
+    assert report.status == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
 
     # Test checking format with incorectly formatted file
-    assert (
-        format_json_file(
-            json_file_incorrect_format, check=False, diff=False, color=False, sort_keys=False
-        )
-        == ReturnCode.NOTHING_WOULD_CHANGE
+    report = Report(check=False, diff=False)
+    format_json_file(
+        json_file_incorrect_format,
+        report,
+        check=False,
+        diff=False,
+        color=False,
+        sort_keys=False,
     )
+    assert report.status == ReturnCode.NOTHING_WOULD_CHANGE.value
 
     # Test with non-existing file
-    assert (
-        format_json_file(
-            Path("non_existing_file.json"), check=False, diff=False, color=False, sort_keys=False
-        )
-        == ReturnCode.INTERNAL_ERROR
+    report = Report(check=False, diff=False)
+    format_json_file(
+        Path("non_existing_file.json"),
+        report,
+        check=False,
+        diff=False,
+        color=False,
+        sort_keys=False,
     )
+    assert report.status == ReturnCode.INTERNAL_ERROR.value
 
     # Test with a non-json file
+    report = Report(check=False, diff=False)
     non_json_file = Path(json_file.parent, "test.txt")
     non_json_file.write_text("hello world", encoding=FILES_ENCODING)
-    assert (
-        format_json_file(non_json_file, check=False, diff=False, color=False, sort_keys=False)
-        == ReturnCode.INTERNAL_ERROR
-    )
+    format_json_file(non_json_file, report, check=False, diff=False, color=False, sort_keys=False)
+    assert report.status == ReturnCode.INTERNAL_ERROR.value
 
     # Test with a malformed json file
+    report = Report(check=False, diff=False)
     malformed_file = Path(json_file.parent, "malformed.json")
     malformed_file.write_text("{", encoding=FILES_ENCODING)
-    assert (
-        format_json_file(malformed_file, check=False, diff=False, color=False, sort_keys=False)
-        == ReturnCode.INTERNAL_ERROR
-    )
+    format_json_file(malformed_file, report, check=False, diff=False, color=False, sort_keys=False)
+    assert report.status == ReturnCode.INTERNAL_ERROR.value
