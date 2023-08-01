@@ -2,7 +2,7 @@
 from pathlib import Path
 from subprocess import run
 
-from jsonator.jsonator import ReturnCode  # pylint: disable=import-error
+from jsonator.enum import ReturnCode  # pylint: disable=import-error
 
 pytest_plugins = ["addons"]
 

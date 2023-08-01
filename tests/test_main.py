@@ -6,7 +6,7 @@ from pathlib import Path
 from pytest_mock import MockerFixture
 
 from jsonator import main  # pylint: disable=import-error
-from jsonator.jsonator import ReturnCode  # pylint: disable=import-error
+from jsonator.enum import ReturnCode  # pylint: disable=import-error
 
 FILES_ENCODING = "utf-8"
 INTERPRETER = Path(sys.executable).stem

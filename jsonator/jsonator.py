@@ -6,23 +6,14 @@ import os
 import random
 import string
 import sys
-from enum import Enum
 from pathlib import Path
 from tempfile import gettempdir
 
 from jsonator import output
+from jsonator.report import Report
 
 INTERPRETER = Path(sys.executable).stem
 FILES_ENCODING = "utf-8"
-
-
-class ReturnCode(Enum):
-    """Set of possible return codes"""
-
-    NOTHING_WOULD_CHANGE = 0
-    SOME_FILES_WOULD_BE_REFORMATTED = 1
-    FILE_NOT_FOUND = 122
-    INTERNAL_ERROR = 123
 
 
 def random_str() -> str:
@@ -41,40 +32,35 @@ def make_temp_file() -> Path:
     return temp_file
 
 
-def format_json_file(
-    json_file: Path, check: bool, diff: bool, color: bool, sort_keys: bool
-) -> ReturnCode:
+def format_json_file(  # pylint: disable=too-many-arguments
+    json_file: Path, report: Report, check: bool, diff: bool, color: bool, sort_keys: bool
+) -> None:
     """
     This function formats the file in JSON format.
     It uses the json.tool module, built into Python, to create a readable JSON format.
     """
-    if check or diff:
-        print(f"Comparing {json_file} - ", end="")
-    else:
-        print(f"Formatting {json_file}")
-
     tmp_file = make_temp_file()
 
-    cmd = [INTERPRETER, "-m", "json.tool", json_file, tmp_file]
+    cmd = [INTERPRETER, "-m", "json.tool", f'"{json_file}"', tmp_file]
     if sort_keys:
         cmd.append("--sort-keys")
 
     os.system(" ".join([str(command) for command in cmd]))
 
-    if check or diff:
+    try:
         is_identical = filecmp.cmp(json_file, tmp_file, shallow=False)
+    except FileNotFoundError:
+        report.failed(json_file, "Internal error")
+        return
 
-        if is_identical:
-            print("Ok")
-            os.unlink(tmp_file)
-            return ReturnCode.NOTHING_WOULD_CHANGE
+    report.done(json_file, not is_identical)
 
-        print("Need to format")
+    if diff:
         diff_contents = output.diff(
             json_file.read_text(encoding=FILES_ENCODING),
             tmp_file.read_text(encoding=FILES_ENCODING),
             json_file.name,
-            tmp_file.name,
+            "formatted file",
         )
 
         if color:
@@ -82,13 +68,11 @@ def format_json_file(
 
         print(diff_contents)
 
-        os.unlink(tmp_file)
-        return ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED
-
     if tmp_file.exists():
-        os.unlink(json_file)
-        os.rename(tmp_file, json_file)
+        if check or diff:
+            os.unlink(tmp_file)
+        else:
+            os.unlink(json_file)
+            os.rename(tmp_file, json_file)
     else:
-        return ReturnCode.INTERNAL_ERROR
-
-    return ReturnCode.NOTHING_WOULD_CHANGE
+        report.failed(json_file, "Internal error")

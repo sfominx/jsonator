@@ -3,7 +3,9 @@ import argparse
 import sys
 from pathlib import Path
 
-from jsonator.jsonator import ReturnCode, format_json_file
+from jsonator.enum import ReturnCode
+from jsonator.jsonator import format_json_file
+from jsonator.report import Report
 
 
 def main() -> int:
@@ -47,23 +49,16 @@ Return code 123 means there was an internal error.""",
         print("The `--sort-keys` option is only available on Python 3.5 and above", file=sys.stderr)
         return ReturnCode.INTERNAL_ERROR.value
 
+    report = Report(args.check, args.diff)
+
     if args.path.is_dir():
-        all_files_identical = True
         pattern = "**/*.json" if args.recursive else "*.json"
 
         for json_file in args.path.glob(pattern):
-            result = format_json_file(json_file, args.check, args.diff, args.color, args.sort_keys)
+            format_json_file(json_file, report, args.check, args.diff, args.color, args.sort_keys)
 
-            if result == ReturnCode.INTERNAL_ERROR:
-                return ReturnCode.INTERNAL_ERROR.value
+    else:
+        format_json_file(args.path, report, args.check, args.diff, args.color, args.sort_keys)
 
-            if result == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED and args.check:
-                all_files_identical = False
-
-        return (
-            ReturnCode.NOTHING_WOULD_CHANGE.value
-            if all_files_identical
-            else ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
-        )
-
-    return format_json_file(args.path, args.check, args.diff, args.color, args.sort_keys).value
+    print(report)
+    return report.status
