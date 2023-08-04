@@ -8,6 +8,7 @@ import string
 import sys
 from pathlib import Path
 from tempfile import gettempdir
+from typing import Optional
 
 from jsonator import output
 from jsonator.report import Report
@@ -33,7 +34,16 @@ def make_temp_file() -> Path:
 
 
 def format_json_file(  # pylint: disable=too-many-arguments
-    json_file: Path, report: Report, check: bool, diff: bool, color: bool, sort_keys: bool
+    json_file: Path,
+    report: Report,
+    check: bool,
+    diff: bool,
+    color: bool,
+    sort_keys: bool,
+    indent: Optional[int],
+    tab: bool,
+    no_indent: bool,
+    compact: bool,
 ) -> None:
     """
     This function formats the file in JSON format.
@@ -44,6 +54,14 @@ def format_json_file(  # pylint: disable=too-many-arguments
     cmd = [INTERPRETER, "-m", "json.tool", f'"{json_file}"', tmp_file]
     if sort_keys:
         cmd.append("--sort-keys")
+    if indent is not None:
+        cmd.append(f"--indent {indent}")
+    if tab:
+        cmd.append("--tab")
+    if no_indent:
+        cmd.append("--no-indent")
+    if compact:
+        cmd.append("--compact")
 
     os.system(" ".join([str(command) for command in cmd]))
 
