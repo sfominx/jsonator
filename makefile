@@ -1,6 +1,6 @@
 check:
-	python3 -m pylint jsonator/ || true
-	python3 -m pylint tests/ || true
+	python3 -m pylint jsonator/ --disable=similarities || true
+	python3 -m pylint tests/ --disable=similarities || true
 	@echo "========================================================================================="
 	python3 -m mypy --disallow-untyped-calls --disallow-untyped-defs --disallow-incomplete-defs --no-implicit-optional jsonator/ || true
 	python3 -m mypy --disallow-untyped-calls --disallow-untyped-defs --disallow-incomplete-defs --no-implicit-optional tests/ || true
