@@ -39,6 +39,23 @@ Return code 123 means there was an internal error.""",
         action="store_true",
         help="Sort the output of dictionaries alphabetically by key.",
     )
+    group = arg_parser.add_mutually_exclusive_group()
+    group.add_argument(
+        "--indent",
+        type=int,
+        help="Separate items with newlines and use this number of spaces for indentation.",
+    )
+    group.add_argument(
+        "--tab",
+        action="store_true",
+        help="Separate items with newlines and use tabs for indentation.",
+    )
+    group.add_argument(
+        "--no-indent", action="store_true", help="Separate items with spaces rather than newlines."
+    )
+    group.add_argument(
+        "--compact", action="store_true", help="Suppress all whitespace separation (most compact)."
+    )
 
     args = arg_parser.parse_args()
 
@@ -49,16 +66,38 @@ Return code 123 means there was an internal error.""",
         print("The `--sort-keys` option is only available on Python 3.5 and above", file=sys.stderr)
         return ReturnCode.INTERNAL_ERROR.value
 
+    if (args.indent or args.tab or args.no_indent or args.tab) and sys.version_info < (3, 9):
+        print(
+            "`--indent`, `--tab`, `--no-indent`, `--compact` options "
+            "are only available on Python 3.9 and above",
+            file=sys.stderr,
+        )
+        return ReturnCode.INTERNAL_ERROR.value
+
     report = Report(args.check, args.diff)
 
     if args.path.is_dir():
         pattern = "**/*.json" if args.recursive else "*.json"
-
-        for json_file in args.path.glob(pattern):
-            format_json_file(json_file, report, args.check, args.diff, args.color, args.sort_keys)
+        files_to_scan = list(args.path.glob(pattern))
 
     else:
-        format_json_file(args.path, report, args.check, args.diff, args.color, args.sort_keys)
+        files_to_scan = [
+            args.path,
+        ]
+
+    for file_to_scan in files_to_scan:
+        format_json_file(
+            file_to_scan,
+            report,
+            args.check,
+            args.diff,
+            args.color,
+            args.sort_keys,
+            args.indent,
+            args.tab,
+            args.no_indent,
+            args.compact,
+        )
 
     print(report)
     return report.status

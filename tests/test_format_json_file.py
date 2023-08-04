@@ -41,18 +41,113 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
     """Test format_json_file function"""
     # Test formatting with corectly formatted file
     report = Report(check=False, diff=False)
-    format_json_file(json_file, report, check=False, diff=False, color=False, sort_keys=False)
+    format_json_file(
+        json_file,
+        report,
+        check=False,
+        diff=False,
+        color=False,
+        sort_keys=False,
+        indent=None,
+        tab=False,
+        no_indent=False,
+        compact=False,
+    )
     assert report.status == ReturnCode.NOTHING_WOULD_CHANGE.value
 
     # Test checking format with corectly formatted file
     report = Report(check=True, diff=False)
-    format_json_file(json_file, report, check=True, diff=False, color=False, sort_keys=False)
+    format_json_file(
+        json_file,
+        report,
+        check=True,
+        diff=False,
+        color=False,
+        sort_keys=False,
+        indent=None,
+        tab=False,
+        no_indent=False,
+        compact=False,
+    )
     assert report.status == ReturnCode.NOTHING_WOULD_CHANGE.value
+
+    # Test checking format with corectly formatted file, but 2 spaces indentation
+    report = Report(check=True, diff=False)
+    format_json_file(
+        json_file,
+        report,
+        check=True,
+        diff=False,
+        color=False,
+        sort_keys=False,
+        indent=2,
+        tab=False,
+        no_indent=False,
+        compact=False,
+    )
+    assert report.status == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
+
+    # Test checking format with corectly formatted file, but tab indentation
+    report = Report(check=True, diff=False)
+    format_json_file(
+        json_file,
+        report,
+        check=True,
+        diff=False,
+        color=False,
+        sort_keys=False,
+        indent=None,
+        tab=True,
+        no_indent=False,
+        compact=False,
+    )
+    assert report.status == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
+
+    # Test checking format with corectly formatted file, but no indentation
+    report = Report(check=True, diff=False)
+    format_json_file(
+        json_file,
+        report,
+        check=True,
+        diff=False,
+        color=False,
+        sort_keys=False,
+        indent=None,
+        tab=False,
+        no_indent=True,
+        compact=False,
+    )
+    assert report.status == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
+
+    # Test checking format with corectly formatted file, but compact formatting
+    report = Report(check=True, diff=False)
+    format_json_file(
+        json_file,
+        report,
+        check=True,
+        diff=False,
+        color=False,
+        sort_keys=False,
+        indent=None,
+        tab=False,
+        no_indent=False,
+        compact=True,
+    )
+    assert report.status == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
 
     # Test checking format with incorectly formatted file
     report = Report(check=True, diff=False)
     format_json_file(
-        json_file_incorrect_format, report, check=True, diff=False, color=False, sort_keys=False
+        json_file_incorrect_format,
+        report,
+        check=True,
+        diff=False,
+        color=False,
+        sort_keys=False,
+        indent=None,
+        tab=False,
+        no_indent=False,
+        compact=False,
     )
     assert report.status == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
 
@@ -65,6 +160,10 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         diff=False,
         color=False,
         sort_keys=False,
+        indent=None,
+        tab=False,
+        no_indent=False,
+        compact=False,
     )
     assert report.status == ReturnCode.NOTHING_WOULD_CHANGE.value
 
@@ -77,6 +176,10 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         diff=False,
         color=False,
         sort_keys=False,
+        indent=None,
+        tab=False,
+        no_indent=False,
+        compact=False,
     )
     assert report.status == ReturnCode.INTERNAL_ERROR.value
 
@@ -84,12 +187,34 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
     report = Report(check=False, diff=False)
     non_json_file = Path(json_file.parent, "test.txt")
     non_json_file.write_text("hello world", encoding=FILES_ENCODING)
-    format_json_file(non_json_file, report, check=False, diff=False, color=False, sort_keys=False)
+    format_json_file(
+        non_json_file,
+        report,
+        check=False,
+        diff=False,
+        color=False,
+        sort_keys=False,
+        indent=None,
+        tab=False,
+        no_indent=False,
+        compact=False,
+    )
     assert report.status == ReturnCode.INTERNAL_ERROR.value
 
     # Test with a malformed json file
     report = Report(check=False, diff=False)
     malformed_file = Path(json_file.parent, "malformed.json")
     malformed_file.write_text("{", encoding=FILES_ENCODING)
-    format_json_file(malformed_file, report, check=False, diff=False, color=False, sort_keys=False)
+    format_json_file(
+        malformed_file,
+        report,
+        check=False,
+        diff=False,
+        color=False,
+        sort_keys=False,
+        indent=None,
+        tab=False,
+        no_indent=False,
+        compact=False,
+    )
     assert report.status == ReturnCode.INTERNAL_ERROR.value

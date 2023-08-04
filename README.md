@@ -30,7 +30,17 @@ can be passed to the main() function:
 
 * --color: Show colored diff. Only applies when `--diff` is given.
 
-* --sort-keys: Sort the output of dictionaries alphabetically by key.
+* --sort-keys: Sort the output of dictionaries alphabetically by key. *Available on Python 3.5+.*
+
+* --indent: Separate items with newlines and use this number of spaces for indentation.
+
+* --tab: Separate items with newlines and use tabs for indentation.
+
+* --no-indent: Separate items with spaces rather than newlines.
+
+* --compact: Suppress all whitespace separation (most compact).
+
+  *--indent, --tab, --no-indent, --compact — mutually exclusive options for whitespace control. Available on Python 3.9+.*
 
 The module uses the ReturnCode enum to indicate the exit code of the formatting operation. The possible exit codes are:
 
