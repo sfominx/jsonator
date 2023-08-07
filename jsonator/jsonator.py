@@ -33,7 +33,7 @@ def make_temp_file() -> Path:
     return temp_file
 
 
-def format_json_file(  # pylint: disable=too-many-arguments
+def format_json_file(  # pylint: disable=too-many-arguments,too-many-branches
     json_file: Path,
     report: Report,
     check: bool,
@@ -44,6 +44,7 @@ def format_json_file(  # pylint: disable=too-many-arguments
     tab: bool,
     no_indent: bool,
     compact: bool,
+    no_ensure_ascii: bool,
 ) -> None:
     """
     This function formats the file in JSON format.
@@ -62,6 +63,8 @@ def format_json_file(  # pylint: disable=too-many-arguments
         cmd.append("--no-indent")
     if compact:
         cmd.append("--compact")
+    if no_ensure_ascii:
+        cmd.append("--no-ensure-ascii")
 
     os.system(" ".join([str(command) for command in cmd]))
 

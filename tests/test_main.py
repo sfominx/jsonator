@@ -29,6 +29,7 @@ def test_main_file_not_found(mocker: MockerFixture) -> None:
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.FILE_NOT_FOUND.value
@@ -49,6 +50,7 @@ def test_main_invalid_json(mocker: MockerFixture, invalid_json: Path) -> None:
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.INTERNAL_ERROR.value
@@ -69,6 +71,7 @@ def test_main_invalid_json_dir(mocker: MockerFixture, invalid_json_in_dir: Path)
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.INTERNAL_ERROR.value
@@ -89,6 +92,7 @@ def test_main_valid_single_file_no_check(mocker: MockerFixture, valid_format_jso
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -111,6 +115,7 @@ def test_main_invalid_single_file_no_check(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -132,6 +137,7 @@ def test_main_valid_single_file_check(mocker: MockerFixture, valid_format_json: 
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -155,6 +161,7 @@ def test_main_valid_single_file_check_sort_keys(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
@@ -176,6 +183,7 @@ def test_main_invalid_single_file_check(mocker: MockerFixture, invalid_format_js
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
@@ -199,6 +207,7 @@ def test_main_valid_dir_no_check_no_subdirs(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -222,6 +231,7 @@ def test_main_invalid_dir_no_check_no_subdirs(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -245,6 +255,7 @@ def test_main_valid_dir_check_no_subdirs(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -268,6 +279,7 @@ def test_main_invalid_dir_check_no_subdirs(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
@@ -290,6 +302,7 @@ def test_main_valid_dir_no_check_no_recursive(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -312,6 +325,7 @@ def test_main_invalid_dir_no_check_no_recursive(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -334,6 +348,7 @@ def test_main_valid_dir_check_no_recursive(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -356,6 +371,7 @@ def test_main_invalid_dir_check_no_recursive(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -378,6 +394,7 @@ def test_main_valid_dir_no_check_recursive(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -400,6 +417,7 @@ def test_main_invalid_dir_no_check_recursive(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -422,6 +440,7 @@ def test_main_valid_dir_check_recursive(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.NOTHING_WOULD_CHANGE.value
@@ -444,6 +463,7 @@ def test_main_invalid_dir_check_recursive(
             tab=False,
             no_indent=False,
             compact=False,
+            no_ensure_ascii=False,
         ),
     )
     assert main() == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
