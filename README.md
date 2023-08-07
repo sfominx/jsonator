@@ -32,6 +32,8 @@ can be passed to the main() function:
 
 * --sort-keys: Sort the output of dictionaries alphabetically by key. *Available on Python 3.5+.*
 
+* --no-ensure-ascii: Disable escaping of non-ASCII characters. *Available on Python 3.9+.*
+
 * --indent: Separate items with newlines and use this number of spaces for indentation.
 
 * --tab: Separate items with newlines and use tabs for indentation.

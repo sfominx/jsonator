@@ -52,6 +52,7 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         tab=False,
         no_indent=False,
         compact=False,
+        no_ensure_ascii=False,
     )
     assert report.status == ReturnCode.NOTHING_WOULD_CHANGE.value
 
@@ -68,6 +69,7 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         tab=False,
         no_indent=False,
         compact=False,
+        no_ensure_ascii=False,
     )
     assert report.status == ReturnCode.NOTHING_WOULD_CHANGE.value
 
@@ -84,6 +86,7 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         tab=False,
         no_indent=False,
         compact=False,
+        no_ensure_ascii=False,
     )
     assert report.status == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
 
@@ -100,6 +103,7 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         tab=True,
         no_indent=False,
         compact=False,
+        no_ensure_ascii=False,
     )
     assert report.status == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
 
@@ -116,6 +120,7 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         tab=False,
         no_indent=True,
         compact=False,
+        no_ensure_ascii=False,
     )
     assert report.status == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
 
@@ -132,6 +137,7 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         tab=False,
         no_indent=False,
         compact=True,
+        no_ensure_ascii=False,
     )
     assert report.status == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
 
@@ -148,6 +154,7 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         tab=False,
         no_indent=False,
         compact=False,
+        no_ensure_ascii=False,
     )
     assert report.status == ReturnCode.SOME_FILES_WOULD_BE_REFORMATTED.value
 
@@ -164,6 +171,7 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         tab=False,
         no_indent=False,
         compact=False,
+        no_ensure_ascii=False,
     )
     assert report.status == ReturnCode.NOTHING_WOULD_CHANGE.value
 
@@ -180,6 +188,7 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         tab=False,
         no_indent=False,
         compact=False,
+        no_ensure_ascii=False,
     )
     assert report.status == ReturnCode.INTERNAL_ERROR.value
 
@@ -198,6 +207,7 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         tab=False,
         no_indent=False,
         compact=False,
+        no_ensure_ascii=False,
     )
     assert report.status == ReturnCode.INTERNAL_ERROR.value
 
@@ -216,5 +226,6 @@ def test_format_json_file(json_file: Path, json_file_incorrect_format: Path) -> 
         tab=False,
         no_indent=False,
         compact=False,
+        no_ensure_ascii=False,
     )
     assert report.status == ReturnCode.INTERNAL_ERROR.value

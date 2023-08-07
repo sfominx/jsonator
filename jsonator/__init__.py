@@ -39,6 +39,11 @@ Return code 123 means there was an internal error.""",
         action="store_true",
         help="Sort the output of dictionaries alphabetically by key.",
     )
+    arg_parser.add_argument(
+        "--no-ensure-ascii",
+        action="store_true",
+        help="Disable escaping of non-ASCII characters.",
+    )
     group = arg_parser.add_mutually_exclusive_group()
     group.add_argument(
         "--indent",
@@ -65,8 +70,10 @@ Return code 123 means there was an internal error.""",
     if args.sort_keys and sys.version_info < (3, 5):
         print("The `--sort-keys` option is only available on Python 3.5 and above", file=sys.stderr)
         return ReturnCode.INTERNAL_ERROR.value
-
-    if (args.indent or args.tab or args.no_indent or args.tab) and sys.version_info < (3, 9):
+    forbidden_python39_args = (
+        args.indent or args.tab or args.no_indent or args.tab or args.no_ensure_ascii
+    )
+    if forbidden_python39_args and sys.version_info < (3, 9):
         print(
             "`--indent`, `--tab`, `--no-indent`, `--compact` options "
             "are only available on Python 3.9 and above",
@@ -97,6 +104,7 @@ Return code 123 means there was an internal error.""",
             args.tab,
             args.no_indent,
             args.compact,
+            args.no_ensure_ascii,
         )
 
     print(report)
