@@ -4,6 +4,7 @@ Format JSON using json tool
 import filecmp
 import os
 import random
+import shutil
 import string
 import sys
 from pathlib import Path
@@ -94,6 +95,7 @@ def format_json_file(  # pylint: disable=too-many-arguments,too-many-branches
             os.unlink(tmp_file)
         else:
             os.unlink(json_file)
-            os.rename(tmp_file, json_file)
+            shutil.copy(tmp_file, json_file)
+            os.unlink(tmp_file)
     else:
         report.failed(json_file, "Internal error")
