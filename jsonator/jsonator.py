@@ -8,13 +8,13 @@ import shutil
 import string
 import sys
 from pathlib import Path
+from subprocess import PIPE, STDOUT, run
 from tempfile import gettempdir
-from typing import Optional
+from typing import List, Optional, Union
 
 from jsonator import output
 from jsonator.report import Report
 
-INTERPRETER = Path(sys.executable).stem
 FILES_ENCODING = "utf-8"
 
 
@@ -34,7 +34,7 @@ def make_temp_file() -> Path:
     return temp_file
 
 
-def format_json_file(  # pylint: disable=too-many-arguments,too-many-branches
+def format_json_file(  # pylint: disable=too-many-arguments,too-many-branches,too-many-locals
     json_file: Path,
     report: Report,
     check: bool,
@@ -53,11 +53,11 @@ def format_json_file(  # pylint: disable=too-many-arguments,too-many-branches
     """
     tmp_file = make_temp_file()
 
-    cmd = [INTERPRETER, "-m", "json.tool", f'"{json_file}"', tmp_file]
+    cmd: List[Union[str, Path]] = [sys.executable, "-m", "json.tool", json_file, tmp_file]
     if sort_keys:
         cmd.append("--sort-keys")
     if indent is not None:
-        cmd.append(f"--indent {indent}")
+        cmd.extend(["--indent", str(indent)])
     if tab:
         cmd.append("--tab")
     if no_indent:
@@ -67,7 +67,11 @@ def format_json_file(  # pylint: disable=too-many-arguments,too-many-branches
     if no_ensure_ascii:
         cmd.append("--no-ensure-ascii")
 
-    os.system(" ".join([str(command) for command in cmd]))
+    execution_result = run(cmd, stdout=PIPE, stderr=STDOUT, check=False)
+
+    if execution_result.returncode or execution_result.stdout:
+        report.failed(json_file, execution_result.stdout.decode(FILES_ENCODING))
+        return
 
     try:
         is_identical = filecmp.cmp(json_file, tmp_file, shallow=False)
