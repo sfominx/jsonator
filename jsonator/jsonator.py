@@ -57,7 +57,7 @@ def format_json_file(  # pylint: disable=too-many-arguments,too-many-branches,to
     if sort_keys:
         cmd.append("--sort-keys")
     if indent is not None:
-        cmd.append(f"--indent {indent}")
+        cmd.extend(["--indent", str(indent)])
     if tab:
         cmd.append("--tab")
     if no_indent:
