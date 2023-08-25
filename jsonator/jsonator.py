@@ -8,6 +8,7 @@ import shutil
 import string
 import sys
 from pathlib import Path
+from subprocess import PIPE, STDOUT, run
 from tempfile import gettempdir
 from typing import Optional
 
@@ -67,7 +68,11 @@ def format_json_file(  # pylint: disable=too-many-arguments,too-many-branches
     if no_ensure_ascii:
         cmd.append("--no-ensure-ascii")
 
-    os.system(" ".join([str(command) for command in cmd]))
+    execution_result = run(" ".join([str(command) for command in cmd]), stdout=PIPE, stderr=STDOUT)
+
+    if execution_result.stdout:
+        report.failed(json_file, execution_result.stdout.decode(FILES_ENCODING))
+        return
 
     try:
         is_identical = filecmp.cmp(json_file, tmp_file, shallow=False)

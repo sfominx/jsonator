@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "jsonator"
-version = "0.1.9"
+version = "0.1.10"
 authors = [
   { name="Sergey Fomin", email="sergiusnn@gmail.com" },
 ]
@@ -37,7 +37,7 @@ jsonator = "jsonator:main"
 [tool.poetry]
 readme = "README.md"
 name = "jsonator"
-version = "0.1.9"
+version = "0.1.10"
 description = "JSON formatting and validating tool"
 authors = [
   "Sergey Fomin <sergiusnn@gmail.com>",
