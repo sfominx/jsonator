@@ -1,7 +1,8 @@
 """
 Summarize runs.
 """
-import sys
+
+import logging
 from pathlib import Path
 
 from jsonator.enum import ReturnCode
@@ -16,20 +17,22 @@ class Report:
         self.change_count = 0
         self.same_count = 0
         self.failure_count = 0
+        logging.basicConfig(format="%(message)s")
+        self._log = logging.getLogger(__name__)
 
     def done(self, src: Path, changed: bool) -> None:
         """Increment the counter for successful reformatting. Write out a message."""
         if changed:
             reformatted = "would reformat" if self.check or self.diff else "reformatted"
-            print(f"{reformatted} {src}")
+            self._log.info("%s %s", reformatted, src)
             self.change_count += 1
         else:
-            print(f"{src} already well formatted, good job.")
+            self._log.info("%s already well formatted, good job.", src)
             self.same_count += 1
 
     def failed(self, src: Path, message: str) -> None:
         """Increment the counter for failed reformatting. Write out a message."""
-        print(f"error: cannot format {src}: {message}", file=sys.stderr)
+        self._log.info("error: cannot format %s: %s", src, message)
         self.failure_count += 1
 
     @property

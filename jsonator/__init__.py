@@ -1,10 +1,11 @@
 """Main function"""
+
 import argparse
-import sys
 from pathlib import Path
 
 from jsonator.enum import ReturnCode
 from jsonator.jsonator import format_json_file
+from jsonator.models import ModeArgs
 from jsonator.report import Report
 
 
@@ -18,8 +19,9 @@ def main() -> int:
     arg_parser.add_argument(
         "--check",
         action="store_true",
+        default=False,
         help="""Don't write the files back, just return the status.
-Return code 0 means nothing would change. 
+Return code 0 means nothing would change.
 Return code 1 means some files would be reformatted.
 Return code 122 means file not found.
 Return code 123 means there was an internal error.""",
@@ -27,36 +29,47 @@ Return code 123 means there was an internal error.""",
     arg_parser.add_argument(
         "--diff",
         action="store_true",
+        default=False,
         help="Don't write the files back, just output a diff for each file on stdout.",
     )
     arg_parser.add_argument(
         "--color",
         action="store_true",
+        default=False,
         help="Show colored diff. Only applies when `--diff` is given.",
     )
     arg_parser.add_argument(
         "--sort-keys",
         action="store_true",
+        default=False,
         help="Sort the output of dictionaries alphabetically by key.",
     )
     arg_parser.add_argument(
         "--no-ensure-ascii",
-        action="store_true",
+        dest="ensure_ascii",
+        action="store_false",
         help="Disable escaping of non-ASCII characters.",
     )
     group = arg_parser.add_mutually_exclusive_group()
     group.add_argument(
         "--indent",
         type=int,
+        default=4,
         help="Separate items with newlines and use this number of spaces for indentation.",
     )
     group.add_argument(
         "--tab",
-        action="store_true",
+        dest="indent",
+        action="store_const",
+        const="\t",
         help="Separate items with newlines and use tabs for indentation.",
     )
     group.add_argument(
-        "--no-indent", action="store_true", help="Separate items with spaces rather than newlines."
+        "--no-indent",
+        dest="indent",
+        action="store_const",
+        const=None,
+        help="Separate items with spaces rather than newlines.",
     )
     group.add_argument(
         "--compact", action="store_true", help="Suppress all whitespace separation (most compact)."
@@ -67,19 +80,15 @@ Return code 123 means there was an internal error.""",
     if not args.path.exists():
         return ReturnCode.FILE_NOT_FOUND.value
 
-    if args.sort_keys and sys.version_info < (3, 5):
-        print("The `--sort-keys` option is only available on Python 3.5 and above", file=sys.stderr)
-        return ReturnCode.INTERNAL_ERROR.value
-    forbidden_python39_args = (
-        args.indent or args.tab or args.no_indent or args.tab or args.no_ensure_ascii
-    )
-    if forbidden_python39_args and sys.version_info < (3, 9):
-        print(
-            "`--indent`, `--tab`, `--no-indent`, `--compact` options "
-            "are only available on Python 3.9 and above",
-            file=sys.stderr,
-        )
-        return ReturnCode.INTERNAL_ERROR.value
+    dump_args = {
+        "sort_keys": args.sort_keys,
+        "indent": args.indent,
+        "ensure_ascii": args.ensure_ascii,
+    }
+
+    if args.compact:
+        dump_args["indent"] = None
+        dump_args["separators"] = ",", ":"
 
     report = Report(args.check, args.diff)
 
@@ -91,21 +100,8 @@ Return code 123 means there was an internal error.""",
         files_to_scan = [
             args.path,
         ]
-
+    mode_args = ModeArgs(args.check, args.diff, args.color)
     for file_to_scan in files_to_scan:
-        format_json_file(
-            file_to_scan,
-            report,
-            args.check,
-            args.diff,
-            args.color,
-            args.sort_keys,
-            args.indent,
-            args.tab,
-            args.no_indent,
-            args.compact,
-            args.no_ensure_ascii,
-        )
+        format_json_file(file_to_scan, report, mode_args, dump_args)
 
-    print(report)
     return report.status

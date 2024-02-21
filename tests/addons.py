@@ -1,4 +1,5 @@
 """Pytest fixtures."""
+
 import sys
 from pathlib import Path
 
@@ -8,7 +9,7 @@ FILES_ENCODING = "utf-8"
 INTERPRETER = Path(sys.executable).stem
 
 
-@pytest.fixture
+@pytest.fixture()
 def valid_format_json(tmp_path: Path) -> Path:
     """Create a temporary file for testing with valid json formatting"""
     file_path = tmp_path / "test.json"
@@ -16,7 +17,7 @@ def valid_format_json(tmp_path: Path) -> Path:
     return file_path
 
 
-@pytest.fixture
+@pytest.fixture()
 def valid_format_dir_no_subdirs(tmp_path: Path) -> Path:
     """Create a temporary file for testing with valid json formatting"""
     test_dir = tmp_path / "test_dir"
@@ -30,7 +31,7 @@ def valid_format_dir_no_subdirs(tmp_path: Path) -> Path:
     return test_dir
 
 
-@pytest.fixture
+@pytest.fixture()
 def valid_format_dir_subdirs(tmp_path: Path) -> Path:
     """Create a temporary file for testing with valid json formatting"""
     test_dir = tmp_path / "test_dir"
@@ -46,7 +47,7 @@ def valid_format_dir_subdirs(tmp_path: Path) -> Path:
     return test_dir
 
 
-@pytest.fixture
+@pytest.fixture()
 def invalid_format_json(tmp_path: Path) -> Path:
     """Create a temporary file for testing with invalid json formatting"""
     file_path = tmp_path / "test_incorrect.json"
@@ -54,7 +55,7 @@ def invalid_format_json(tmp_path: Path) -> Path:
     return file_path
 
 
-@pytest.fixture
+@pytest.fixture()
 def invalid_format_json_multiple_keys(tmp_path: Path) -> Path:
     """Create a temporary file for testing
     with invalid json formatting and multiple keys"""
@@ -63,7 +64,7 @@ def invalid_format_json_multiple_keys(tmp_path: Path) -> Path:
     return file_path
 
 
-@pytest.fixture
+@pytest.fixture()
 def invalid_format_dir_no_subdirs(tmp_path: Path) -> Path:
     """Create a temporary file for testing with valid json formatting"""
     test_dir = tmp_path / "test_dir"
@@ -77,7 +78,7 @@ def invalid_format_dir_no_subdirs(tmp_path: Path) -> Path:
     return test_dir
 
 
-@pytest.fixture
+@pytest.fixture()
 def invalid_format_dir_subdirs(tmp_path: Path) -> Path:
     """Create a temporary file for testing with valid json formatting"""
     test_dir = tmp_path / "test_dir"
@@ -93,7 +94,7 @@ def invalid_format_dir_subdirs(tmp_path: Path) -> Path:
     return test_dir
 
 
-@pytest.fixture
+@pytest.fixture()
 def invalid_json(tmp_path: Path) -> Path:
     """Create a temporary file for testing with invalid json formatting"""
     file_path = tmp_path / "test_invalid.json"
@@ -101,7 +102,7 @@ def invalid_json(tmp_path: Path) -> Path:
     return file_path
 
 
-@pytest.fixture
+@pytest.fixture()
 def invalid_json_in_dir(tmp_path: Path) -> Path:
     """Create a temporary file inside directory for testing with invalid json formatting"""
     test_dir = tmp_path / "test_dir"

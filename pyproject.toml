@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "jsonator"
-version = "0.1.10"
+version = "0.1.11"
 authors = [
   { name="Sergey Fomin", email="sergiusnn@gmail.com" },
 ]
@@ -37,8 +37,90 @@ jsonator = "jsonator:main"
 [tool.poetry]
 readme = "README.md"
 name = "jsonator"
-version = "0.1.10"
+version = "0.1.11"
 description = "JSON formatting and validating tool"
 authors = [
   "Sergey Fomin <sergiusnn@gmail.com>",
 ]
+
+[tool.ruff]
+line-length = 100
+indent-width = 4
+target-version = "py38"
+# preview = true
+
+[tool.ruff.lint]
+select = [
+    "F",
+    "W",
+    "E",
+    "C90",
+    "I",
+    "N",
+    # "D",
+    "UP",
+    "YTT",
+    "ANN",
+    "ASYNC",
+    "TRIO",
+    # "S",
+    "FA",
+    "BLE",
+    # "FBT",
+    "B",
+    "A",
+    "COM",
+    # "CPY",
+    "C4",
+    "DTZ",
+    "T10",
+    "DJ",
+    "EM",
+    "EXE",
+    "FA",
+    "ISC",
+    "ICN",
+    "G",
+    "INP",
+    "PIE",
+    "T20",
+    "PYI",
+    "PT",
+    "Q",
+    "RSE",
+    "RET",
+    "SLF",
+    "SLOT",
+    "SIM",
+    "TID",
+    "TCH",
+    "INT",
+    "ARG",
+    "PTH",
+    "TD",
+    "FIX",
+    "ERA",
+    "PD",
+    "PGH",
+    "PL",
+    "TRY",
+    "FLY",
+    "NPY",
+    "AIR",
+    "PERF",
+    "FURB",
+    "LOG"
+]
+ignore = ["ANN101", "ANN401", "ANN204", "COM812", "ISC001", "D107", "D105", "FA100"]
+
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = true
+line-ending = "auto"
