@@ -3,20 +3,16 @@ Tests for the format_json_file function
 """
 
 import json
-import sys
 from pathlib import Path
 
 import pytest
 
-from jsonator.enum import ReturnCode  # pylint: disable=import-error
-from jsonator.models import ModeArgs
-from jsonator.report import Report  # pylint: disable=import-error
-
-# pylint: disable=import-error,wrong-import-position,redefined-outer-name
-
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-
+from jsonator.enum import ReturnCode
 from jsonator.jsonator import format_json_file
+from jsonator.models import ModeArgs
+from jsonator.report import Report
+
+# pylint: disable=redefined-outer-name
 
 FILES_ENCODING = "utf-8"
 

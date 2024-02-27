@@ -17,22 +17,22 @@ class Report:
         self.change_count = 0
         self.same_count = 0
         self.failure_count = 0
-        logging.basicConfig(format="%(message)s")
-        self._log = logging.getLogger(__name__)
+        self._log = logging.getLogger(self.__class__.__name__)
 
     def done(self, src: Path, changed: bool) -> None:
         """Increment the counter for successful reformatting. Write out a message."""
         if changed:
             reformatted = "would reformat" if self.check or self.diff else "reformatted"
-            self._log.info("%s %s", reformatted, src)
+            self._log.warning("%s %s", reformatted, src)
             self.change_count += 1
+
         else:
             self._log.info("%s already well formatted, good job.", src)
             self.same_count += 1
 
     def failed(self, src: Path, message: str) -> None:
         """Increment the counter for failed reformatting. Write out a message."""
-        self._log.info("error: cannot format %s: %s", src, message)
+        self._log.error("error: cannot format %s: %s", src, message)
         self.failure_count += 1
 
     @property
@@ -58,19 +58,21 @@ class Report:
             reformatted = "would be reformatted"
             unchanged = "would be left unchanged"
             failed = "would fail to reformat"
+
         else:
             reformatted = "reformatted"
             unchanged = "left unchanged"
             failed = "failed to reformat"
+
         report = []
+
         if self.change_count:
-            ending = "s" if self.change_count > 1 else ""
-            report.append(f"{self.change_count} file{ending} {reformatted}")
+            report.append(f"{self.change_count} file{'s'[:self.change_count ^ 1]} {reformatted}")
 
         if self.same_count:
-            ending = "s" if self.same_count > 1 else ""
-            report.append(f"{self.same_count} file{ending} {unchanged}")
+            report.append(f"{self.same_count} file{'s'[:self.same_count ^ 1]} {unchanged}")
+
         if self.failure_count:
-            ending = "s" if self.failure_count > 1 else ""
-            report.append(f"{self.failure_count} file{ending} {failed}")
+            report.append(f"{self.failure_count} file{'s'[:self.failure_count ^ 1]} {failed}")
+
         return ", ".join(report) + "."

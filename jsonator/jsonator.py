@@ -19,15 +19,14 @@ if TYPE_CHECKING:
 UTF_8 = "utf-8"
 
 
-def format_json_file(  # pylint: disable=too-many-arguments,too-many-branches,too-many-locals
+def format_json_file(
     json_file: Path, report: Report, mode_args: ModeArgs, dump_args: dict[str, Any]
 ) -> None:
     """
     This function formats the file in JSON format.
     It uses the json.tool module, built into Python, to create a readable JSON format.
     """
-    logging.basicConfig(format="%(message)s")
-
+    log = logging.getLogger(__name__)
     try:
         input_json_data = json_file.read_text(encoding=UTF_8)
 
@@ -61,4 +60,5 @@ def format_json_file(  # pylint: disable=too-many-arguments,too-many-branches,to
         if mode_args.color:
             diff_contents = output.color_diff(diff_contents)
 
-        logging.info(diff_contents)
+        if diff_contents:
+            log.warning(diff_contents)

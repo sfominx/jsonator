@@ -1,6 +1,7 @@
 """Main function"""
 
 import argparse
+import logging
 from pathlib import Path
 
 from jsonator.enum import ReturnCode
@@ -74,8 +75,27 @@ Return code 123 means there was an internal error.""",
     group.add_argument(
         "--compact", action="store_true", help="Suppress all whitespace separation (most compact)."
     )
+    arg_parser.add_argument(
+        "--verbosity",
+        "-v",
+        type=int,
+        default=3,
+        choices=range(5),
+        metavar="[0-4]",
+        help="Set verbosity level. 0=quiet, 1=error, 2=warn, 3=info (default), 4=debug",
+    )
 
     args = arg_parser.parse_args()
+
+    level = {
+        0: logging.CRITICAL,
+        1: logging.ERROR,
+        2: logging.WARNING,
+        3: logging.INFO,
+        4: logging.DEBUG,
+    }
+    logging.basicConfig(level=level.get(args.verbosity, 3), format="%(message)s")
+    log = logging.getLogger(__name__)
 
     if not args.path.exists():
         return ReturnCode.FILE_NOT_FOUND.value
@@ -101,7 +121,17 @@ Return code 123 means there was an internal error.""",
             args.path,
         ]
     mode_args = ModeArgs(args.check, args.diff, args.color)
+
     for file_to_scan in files_to_scan:
         format_json_file(file_to_scan, report, mode_args, dump_args)
+
+    if report.failure_count > 0:
+        log.error(report)
+
+    if report.change_count > 0:
+        log.warning(report)
+
+    else:
+        log.info(report)
 
     return report.status

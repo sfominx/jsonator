@@ -35,5 +35,7 @@ def color_diff(contents: str) -> str:
             new_line = "\033[32m" + line + "\033[0m"  # green, reset
         elif line.startswith("-"):
             new_line = "\033[31m" + line + "\033[0m"  # red, reset
+        else:
+            new_line = line
         lines[i] = new_line
     return "\n".join(lines)
