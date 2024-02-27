@@ -1,4 +1,5 @@
 """Main package module"""
+
 import sys
 
 from jsonator import main

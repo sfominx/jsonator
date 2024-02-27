@@ -1,10 +1,11 @@
 """Test tool"""
+
 from pathlib import Path
 from subprocess import run
 
 from jsonator.enum import ReturnCode  # pylint: disable=import-error
 
-pytest_plugins = ["addons"]
+pytest_plugins = ["tests.addons"]
 
 PYTHON_EXE = "python"
 MODULE = "-m"
